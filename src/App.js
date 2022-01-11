@@ -23,6 +23,8 @@ function App() {
   const [displayImage, setDisplayImage] = useState(null);
   const [user, setUser] = useState([]);
   const provider = new GoogleAuthProvider();
+  const [isUploaded, setIsUploaded] = useState(true);
+  const [uploadText, setUploadText] = useState('upload');
 
   useEffect(() => {
     // const postSnapshot = await getDocs(collection(db, 'posts'));
@@ -41,6 +43,7 @@ function App() {
     if (event.target.files[0]) {
       console.log(event.target.files[0]);
       setDisplayImage(URL.createObjectURL(event.target.files[0]));
+      setUploadText('please wait...')
       uploadBytes(
         ref(storage, `${event.target.files[0].name}`),
         event.target.files[0]
@@ -49,6 +52,8 @@ function App() {
         getDownloadURL(ref(storage, `${event.target.files[0].name}`)).then(
           (url) => {
             setImageUploadUrl(url);
+            setIsUploaded(false);
+            setUploadText('upload');
           }
         );
       });
@@ -67,7 +72,7 @@ function App() {
     await setDoc(postRef, data);
     setCaption("");
     setDisplayImage(null);
-
+    setIsUploaded(true);
   };
 
   const signInGoogle = () => {
@@ -107,8 +112,9 @@ function App() {
                 <button
                 className="bg-sky-500 text-white px-4 py-2 rounded-lg"
                 onClick={uploadPost}
+                disabled={isUploaded}
               >
-                upload
+                {uploadText}
               </button>
               </div>
               <input className="hidden" type="file" id="file" onChange={uploadImage} />
