@@ -9,7 +9,7 @@ const Posts = ({username, caption, imageUrl, profileUrl}) => {
                 </figure>
                 <p className='font-semibold pl-5 text-lg'>{username}</p>
             </header>
-            <section className='pt-4'>
+            <section>
             <figure className='w-full'>
                     <img className='w-full h-auto' src={imageUrl} alt="" />
                 </figure>
